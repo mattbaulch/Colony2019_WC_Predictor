@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 FIFA World Cup Predictor - Fundraiser</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>⚽ 2026 FIFA World Cup Predictor</h1>
+            <p class="subtitle">Colony Park 2019's - £10 Entry</p>
+            <nav>
+                <button onclick="showSection('predictions')">Make Predictions</button>
+                <button onclick="showSection('leaderboard')">Leaderboard</button>
+                <button onclick="showSection('rules')">Rules & Scoring</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Entry Form Section -->
+        <section id="entry-form" class="section active">
+            <h2>Enter the Competition</h2>
+            <form id="entryForm">
+                <div class="form-group">
+                    <label for="playerName">Your Name:</label>
+                    <input type="text" id="playerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="playerEmail">Email:</label>
+                    <input type="email" id="playerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="playerPhone">Phone:</label>
+                    <input type="tel" id="playerPhone" required>
+                </div>
+                <div class="payment-info">
+                    <p><strong>Entry Fee: £10</strong></p>
+                    <p class="note">Payment instructions: Please pay via bank transfer or cash to the club coordinator. Your predictions will be saved once submitted.</p>
+                </div>
+                <button type="submit" class="btn btn-primary">Continue to Predictions →</button>
+            </form>
+        </section>
+
+        <!-- Predictions Section -->
+        <section id="predictions" class="section">
+            <h2>Group Stage Predictions</h2>
+            <p class="instructions">Enter your score predictions for each match. Scoring: Correct score (5 pts each team) + Correct result (10 pts) + Perfect prediction bonus (20 pts) = 40 pts max per match</p>
+            
+            <div class="progress-indicator">
+                <span id="predictionsCount">0</span>/48 matches predicted
+            </div>
+
+            <!-- Group A -->
+            <div class="group-section">
+                <h3 class="group-header">Group A</h3>
+                <div class="teams-list">
+                    <span class="team-badge">🇲🇽 Mexico (H)</span>
+                    <span class="team-badge">🇿🇦 South Africa</span>
+                    <span class="team-badge">🇰🇷 South Korea</span>
+                    <span class="team-badge">🇨🇿 Czech Republic</span>
+                </div>
+                
+                <div class="match-card" data-match-id="1">
+                    <div class="match-info">
+                        <span class="match-date">June 11, 1:00 PM</span>
+                        <span class="match-venue">Estadio Azteca, Mexico City</span>
+                    </div>
+                    <div class="match-prediction">
+                        <div class="team">
+                            <span class="flag">🇲🇽</span>
+                            <span class="team-name">Mexico</span>
+                        </div>
+                        <div class="score-inputs">
+                            <input type="number" min="0" max="20" class="score-input" data-team="home" placeholder="0">
+                            <span class="vs">-</span>
+                            <input type="number" min="0" max="20" class="score-input" data-team="away" placeholder="0">
+                        </div>
+                        <div class="team">
+                            <span class="flag">🇿🇦</span>
+                            <span class="team-name">South Africa</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-card" data-match-id="2">
+                    <div class="match-info">
+                        <span class="match-date">June 11, 8:00 PM</span>
+                        <span class="match-venue">Estadio Akron, Zapopan</span>
+                    </div>
+                    <div class="match-prediction">
+                        <div class="team">
+                            <span class="flag">🇰🇷</span>
+                            <span class="team-name">South Korea</span>
+                        </div>
+                        <div class="score-inputs">
+                            <input type="number" min="0" max="20" class="score-input" data-team="home" placeholder="0">
+                            <span class="vs">-</span>
+                            <input type="number" min="0" max="20" class="score-input" data-team="away" placeholder="0">
+                        </div>
+                        <div class="team">
+                            <span class="flag">🇨🇿</span>
+                            <span class="team-name">Czech Republic</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-card" data-match-id="25">
+                    <div class="match-info">
+                        <span class="match-date">June 18, 12:00 PM</span>
+                        <span class="match-venue">Mercedes-Benz Stadium, Atlanta</span>
+                    </div>
+                    <div class="match-prediction">
+                        <div class="team">
+                            <span class="flag">🇨🇿</span>
+                            <span class="team-name">Czech Republic</span>
+                        </div>
+                        <div class="score-inputs">
+                            <input type="number" min="0" max="20" class="score-input" data-team="home" placeholder="0">
+                            <span class="vs">-</span>
+                            <input type="number" min="0" max="20" class="score-input" data-team="away" placeholder="0">
+                        </div>
+                        <div class="team">
+                            <span class="flag">🇿🇦</span>
+                            <span class="team-name">South Africa</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-card" data-match-id="28">
+                    <div class="match-info">
+                        <span class="match-date">June 18, 7:00 PM</span>
+                        <span class="match-venue">Estadio Akron, Zapopan</span>
+                    </div>
+                    <div class="match-prediction">
+                        <div class="team">
+                            <span class="flag">🇲🇽</span>
+                            <span class="team-name">Mexico</span>
+                        </div>
+                        <div class="score-inputs">
+                            <input type="number" min="0" max="20" class="score-input" data-team="home" placeholder="0">
+                            <span class="vs">-</span>
+                            <input type="number" min="0" max="20" class="score-input" data-team="away" placeholder="0">
+                        </div>
+                        <div class="team">
+                            <span class="flag">🇰🇷</span>
+                            <span class="team-name">South Korea</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-card" data-match-id="53">
+                    <div class="match-info">
+                        <span class="match-date">June 24, 7:00 PM</span>
+                        <span class="match-venue">Estadio Azteca, Mexico City</span>
+                    </div>
+                    <div class="match-prediction">
+                        <div class="team">
+                            <span class="flag">🇨🇿</span>
+                            <span class="team-name">Czech Republic</span>
+                        </div>
+                        <div class="score-inputs">
+                            <input type="number" min="0" max="20" class="score-input" data-team="home" placeholder="0">
+                            <span class="vs">-</span>
+                            <input type="number" min="0" max="20" class="score-input" data-team="away" placeholder="0">
+                        </div>
+                        <div class="team">
+                            <span class="flag">🇲🇽</span>
+                            <span class="team-name">Mexico</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-card" data-match-id="54">
+                    <div class="match-info">
+                        <span class="match-date">June 24, 7:00 PM</span>
+                        <span class="match-venue">Estadio BBVA, Guadalupe</span>
+                    </div>
+                    <div class="match-prediction">
+                        <div class="team">
+                            <span class="flag">🇿🇦</span>
+                            <span class="team-name">South Africa</span>
+                        </div>
+                        <div class="score-inputs">
+                            <input type="number" min="0" max="20" class="score-input" data-team="home" placeholder="0">
+                            <span class="vs">-</span>
+                            <input type="number" min="0" max="20" class="score-input" data-team="away" placeholder="0">
+                        </div>
+                        <div class="team">
+                            <span class="flag">🇰🇷</span>
+                            <span class="team-name">South Korea</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group-winner-prediction">
+                    <label>Group A Winner:</label>
+                    <select class="winner-select" data-group="A">
+                        <option value="">Select winner...</option>
+                        <option value="Mexico">Mexico</option>
+                        <option value="South Africa">South Africa</option>
+                        <option value="South Korea">South Korea</option>
+                        <option value="Czech Republic">Czech Republic</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Group B -->
+            <div class="group-section">
+                <h3 class="group-header">Group B</h3>
+                <div class="teams-list">
+                    <span class="team-badge">🇨🇦 Canada (H)</span>
+                    <span class="team-badge">🇧🇦 Bosnia and Herzegovina</span>
+                    <span class="team-badge">🇶🇦 Qatar</span>
+                    <span class="team-badge">🇨🇭 Switzerland</span>
+                </div>
+                
+                <div class="match-card" data-match-id="3">
+                    <div class="match-info">
+                        <span class="match-date">June 12, 3:00 PM</span>
+                        <span class="match-venue">BMO Field, Toronto</span>
+                    </div>
+                    <div class="match-prediction">
+                        <div class="team">
+                            <span class="flag">🇨🇦</span>
+                            <span class="team-name">Canada</span>
+                        </div>
+                        <div class="score-inputs">
+                            <input type="number" min="0" max="20" class="score-input" data-team="home" placeholder="0">
+                            <span class="vs">-</span>
+                            <input type="number" min="0" max="20" class="score-input" data-team="away" placeholder="0">
+                        </div>
+                        <div class="team">
+                            <span class="flag">🇧🇦</span>
+                            <span class="team-name">Bosnia and Herzegovina</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-card" data-match-id="8">
+                    <div class="match-info">
+                        <span class="match-date">June 13, 12:00 PM</span>
+                        <span class="match-venue">Levi's Stadium, Santa Clara</span>
+                    </div>
+                    <div class="match-prediction">
+                        <div class="team">
+                            <span class="flag">🇶🇦</span>
+                            <span class="team-name">Qatar</span>
+                        </div>
+                        <div class="score-inputs">
+                            <input type="number" min="0" max="20" class="score-input" data-team="home" placeholder="0">
+                            <span class="vs">-</span>
+                            <input type="number" min="0" max="20" class="score-input" data-team="away" placeholder="0">
+                        </div>
+                        <div class="team">
+                            <span class="flag">🇨🇭</span>
+                            <span class="team-name">Switzerland</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-card" data-match-id="26">
+                    <div class="match-info">
+                        <span class="match-date">June 18, 12:00 PM</span>
+                        <span class="match-venue">SoFi Stadium, Inglewood</span>
+                    </div>
+                    <div class="match-prediction">
+                        <div class="team">
+                            <span class="flag">🇨🇭</span>
+                            <span class="team-name">Switzerland</span>
+                        </div>
+                        <div class="score-inputs">
+                            <input type="number" min="0" max="20" class="score-input" data-team="home" placeholder="0">
+                            <span class="vs">-</span>
+                            <input type="number" min="0" max="20" class="score-input" data-team="away" placeholder="0">
+                        </div>
+                        <div class="team">
+                            <span class="flag">🇧🇦</span>
+                            <span class="team-name">Bosnia and Herzegovina</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-card" data-match-id="27">
+                    <div class="match-info">
+                        <span class="match-date">June 18, 3:00 PM</span>
+                        <span class="match-venue">BC Place, Vancouver</span>
+                    </div>
+                    <div class="match-prediction">
+                        <div class="team">
+                            <span class="flag">🇨🇦</span>
+                            <span class="team-name">Canada</span>
+                        </div>
+                        <div class="score-inputs">
+                            <input type="number" min="0" max="20" class="score-input" data-team="home" placeholder="0">
+                            <span class="vs">-</span>
+                            <input type="number" min="0" max="20" class="score-input" data-team="away" placeholder="0">
+                        </div>
+                        <div class="team">
+                            <span class="flag">🇶🇦</span>
+                            <span class="team-name">Qatar</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-card" data-match-id="51">
+                    <div class="match-info">
+                        <span class="match-date">June 24, 12:00 PM</span>
+                        <span class="match-venue">BC Place, Vancouver</span>
+                    </div>
+                    <div class="match-prediction">
+                        <div class="team">
+                            <span class="flag">🇨🇭</span>
+                            <span class="team-name">Switzerland</span>
+                        </div>
+                        <div class="score-inputs">
+                            <input type="number" min="0" max="20" class="score-input" data-team="home" placeholder="0">
+                            <span class="vs">-</span>
+                            <input type="number" min="0" max="20" class="score-input" data-team="away" placeholder="0">
+                        </div>
+                        <div class="team">
+                            <span class="flag">🇨🇦</span>
+                            <span class="team-name">Canada</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-card" data-match-id="52">
+                    <div class="match-info">
+                        <span class="match-date">June 24, 12:00 PM</span>
+                        <span class="match-venue">Lumen Field, Seattle</span>
+                    </div>
+                    <div class="match-prediction">
+                        <div class="team">
+                            <span class="flag">🇧🇦</span>
+                            <span class="team-name">Bosnia and Herzegovina</span>
+                        </div>
+                        <div class="score-inputs">
+                            <input type="number" min="0" max="20" class="score-input" data-team="home" placeholder="0">
+                            <span class="vs">-</span>
+                            <input type="number" min="0" max="20" class="score-input" data-team="away" placeholder="0">
+                        </div>
+                        <div class="team">
+                            <span class="flag">🇶🇦</span>
+                            <span class="team-name">Qatar</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group-winner-prediction">
+                    <label>Group B Winner:</label>
+                    <select class="winner-select" data-group="B">
+                        <option value="">Select winner...</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                        <option value="Qatar">Qatar</option>
+                        <option value="Switzerland">Switzerland</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Bonus Predictions -->
+            <div class="bonus-section">
+                <h3>Bonus Predictions (10 pts each correct)</h3>
+                
+                <div class="bonus-prediction">
+                    <label>Tournament Winner:</label>
+                    <input type="text" id="tournamentWinner" placeholder="Enter team name">
+                </div>
+
+                <div class="bonus-prediction">
+                    <label>Golden Boot Winner (Top Scorer):</label>
+                    <input type="text" id="goldenBoot" placeholder="Enter player name">
+                </div>
+
+                <div class="bonus-prediction">
+                    <label>Total Goals in Tournament:</label>
+                    <input type="number" id="totalGoals" placeholder="Enter number" min="50" max="300">
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <button onclick="savePredictions()" class="btn btn-success btn-large">Submit All Predictions</button>
+                <p class="note">Note: You can save and edit your predictions until the tournament starts on June 11, 2026</p>
+            </div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section id="leaderboard" class="section">
+            <h2>🏆 Current Leaderboard</h2>
+            <div class="leaderboard-stats">
+                <div class="stat-card">
+                    <span class="stat-value" id="totalParticipants">0</span>
+                    <span class="stat-label">Participants</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="totalFundsRaised">£0</span>
+                    <span class="stat-label">Funds Raised</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="matchesPlayed">0</span>
+                    <span class="stat-label">Matches Played</span>
+                </div>
+            </div>
+
+            <div class="leaderboard-table">
+                <table id="leaderboardTable">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Points</th>
+                            <th>Correct Scores</th>
+                            <th>Correct Results</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardBody">
+                        <tr>
+                            <td colspan="5" class="empty-state">No predictions submitted yet. Be the first!</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Rules Section -->
+        <section id="rules" class="section">
+            <h2>📋 Rules & Scoring</h2>
+            
+            <div class="rules-content">
+                <h3>How to Play</h3>
+                <ol>
+                    <li>Pay £10 entry fee to participate</li>
+                    <li>Predict the score for each group stage match (48 matches)</li>
+                    <li>Select your group winners</li>
+                    <li>Make bonus predictions (tournament winner, golden boot, total goals)</li>
+                    <li>Submit your predictions before June 11, 2026</li>
+                </ol>
+
+                <h3>Points System</h3>
+                <div class="scoring-table">
+                    <table>
+                        <tr>
+                            <td><strong>Correct Home Team Score</strong></td>
+                            <td>5 points</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Correct Away Team Score</strong></td>
+                            <td>5 points</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Correct Match Result</strong> (Win/Draw/Loss)</td>
+                            <td>10 points</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Perfect Prediction Bonus</strong> (Exact score)</td>
+                            <td>20 points</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td><strong>MAXIMUM per match</strong></td>
+                            <td><strong>40 points</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bonus Predictions</strong> (each correct)</td>
+                            <td>10 points</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3>Example</h3>
+                <div class="example-box">
+                    <p><strong>Actual Result:</strong> Mexico 2 - 1 South Africa</p>
+                    <p><strong>Your Prediction:</strong> Mexico 2 - 1 South Africa</p>
+                    <p><strong>Points Earned:</strong></p>
+                    <ul>
+                        <li>Correct Home Score (2): 5 points</li>
+                        <li>Correct Away Score (1): 5 points</li>
+                        <li>Correct Result (Mexico win): 10 points</li>
+                        <li>Perfect Prediction Bonus: 20 points</li>
+                        <li><strong>Total: 40 points</strong></li>
+                    </ul>
+                </div>
+
+                <h3>Prizes</h3>
+                <ul>
+                    <li>🥇 <strong>1st Place:</strong> 40% of prize pot</li>
+                    <li>🥈 <strong>2nd Place:</strong> 25% of prize pot</li>
+                    <li>🥉 <strong>3rd Place:</strong> 15% of prize pot</li>
+                    <li>🏅 <strong>Best Weekly Score:</strong> £20 (each match week)</li>
+                </ul>
+
+                <h3>Important Information</h3>
+                <ul>
+                    <li>All predictions must be submitted before tournament kick-off on June 11, 2026</li>
+                    <li>You can edit your predictions any time before the tournament starts</li>
+                    <li>Leaderboard updates after each match</li>
+                    <li>60% of entry fees go to prize pot, 40% to the club</li>
+                    <li>Payment must be received before predictions are considered valid</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Local Football Club - World Cup Predictor Fundraiser</p>
+            <p>All funds support our youth football programs</p>
+            <p><a href="admin.html" style="color: #ccc; font-size: 0.8em;">Admin Login</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

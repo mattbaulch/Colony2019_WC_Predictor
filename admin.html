@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - World Cup Predictor</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .admin-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .result-form {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 2fr;
+            gap: 15px;
+            align-items: end;
+            margin-bottom: 15px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .result-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .result-form input, .result-form select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .results-list {
+            margin-top: 30px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .result-item:hover {
+            background: #e9ecef;
+        }
+
+        .result-info {
+            flex: 1;
+        }
+
+        .result-score {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin: 0 20px;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-box h3 {
+            margin: 0 0 10px 0;
+            font-size: 2.5em;
+        }
+
+        .stat-box p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .result-form {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-buttons button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>🔐 Admin Panel</h1>
+            <p>World Cup Predictor Management</p>
+            <a href="index.html" style="color: white; text-decoration: underline;">← Back to Main Site</a>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="admin-section">
+            <h2>📊 Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h3 id="adminTotalParticipants">0</h3>
+                    <p>Total Participants</p>
+                </div>
+                <div class="stat-box">
+                    <h3 id="adminTotalFunds">£0</h3>
+                    <p>Funds Raised</p>
+                </div>
+                <div class="stat-box">
+                    <h3 id="adminMatchesEntered">0</h3>
+                    <p>Results Entered</p>
+                </div>
+                <div class="stat-box">
+                    <h3 id="adminMatchesRemaining">48</h3>
+                    <p>Matches Remaining</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Section -->
+        <div class="admin-section">
+            <h2>⚡ Quick Actions</h2>
+            <div class="action-buttons">
+                <button onclick="downloadParticipants()" class="btn btn-primary">
+                    📥 Download Participant List
+                </button>
+                <button onclick="downloadPredictions()" class="btn btn-primary">
+                    📥 Download All Predictions
+                </button>
+                <button onclick="exportAllData()" class="btn btn-primary">
+                    💾 Export All Data (Backup)
+                </button>
+                <button onclick="document.getElementById('importFile').click()" class="btn btn-primary">
+                    📤 Import Data
+                </button>
+                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importAllData(this)">
+                <button onclick="refreshLeaderboard()" class="btn btn-success">
+                    🔄 Refresh Leaderboard
+                </button>
+                <button onclick="clearResults()" class="btn" style="background: #f39c12; color: white;">
+                    🗑️ Clear Results Only
+                </button>
+                <button onclick="clearEverything()" class="btn" style="background: #e74c3c; color: white;">
+                    ⚠️ Clear All Data
+                </button>
+            </div>
+        </div>
+
+        <!-- Enter Match Results Section -->
+        <div class="admin-section">
+            <h2>⚽ Enter Match Results</h2>
+            <p class="note">Enter the actual match scores as they are completed. The leaderboard will update automatically.</p>
+            
+            <div class="result-form">
+                <div>
+                    <label for="matchSelect">Select Match:</label>
+                    <select id="matchSelect">
+                        <option value="">-- Select a match --</option>
+                        <optgroup label="Group A">
+                            <option value="1">Match 1: Mexico vs South Africa</option>
+                            <option value="2">Match 2: South Korea vs Czech Republic</option>
+                            <option value="25">Match 25: Czech Republic vs South Africa</option>
+                            <option value="28">Match 28: Mexico vs South Korea</option>
+                            <option value="53">Match 53: Czech Republic vs Mexico</option>
+                            <option value="54">Match 54: South Africa vs South Korea</option>
+                        </optgroup>
+                        <optgroup label="Group B">
+                            <option value="3">Match 3: Canada vs Bosnia and Herzegovina</option>
+                            <option value="8">Match 8: Qatar vs Switzerland</option>
+                            <option value="26">Match 26: Switzerland vs Bosnia and Herzegovina</option>
+                            <option value="27">Match 27: Canada vs Qatar</option>
+                            <option value="51">Match 51: Switzerland vs Canada</option>
+                            <option value="52">Match 52: Bosnia and Herzegovina vs Qatar</option>
+                        </optgroup>
+                        <!-- Add more groups as needed -->
+                    </select>
+                </div>
+                <div>
+                    <label for="homeScoreInput">Home Score:</label>
+                    <input type="number" id="homeScoreInput" min="0" max="20" placeholder="0">
+                </div>
+                <div>
+                    <label for="awayScoreInput">Away Score:</label>
+                    <input type="number" id="awayScoreInput" min="0" max="20" placeholder="0">
+                </div>
+                <div>
+                    <button onclick="addResult()" class="btn btn-success" style="width: 100%;">Add Result</button>
+                </div>
+            </div>
+
+            <div class="results-list">
+                <h3>Entered Results</h3>
+                <div id="resultsContainer">
+                    <p style="color: #999; text-align: center; padding: 20px;">No results entered yet.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Participant Management Section -->
+        <div class="admin-section">
+            <h2>👥 Participant Management</h2>
+            <div id="participantsList"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Admin-specific JavaScript
+
+        let matchResults = [];
+        let allPredictions = [];
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAdminData();
+            updateAdminStats();
+            displayResults();
+            displayParticipants();
+        });
+
+        // Load data from localStorage
+        function loadAdminData() {
+            const savedResults = localStorage.getItem('matchResults');
+            if (savedResults) {
+                matchResults = JSON.parse(savedResults);
+            }
+
+            const savedPredictions = localStorage.getItem('allPredictions');
+            if (savedPredictions) {
+                allPredictions = JSON.parse(savedPredictions);
+            }
+        }
+
+        // Update admin statistics
+        function updateAdminStats() {
+            document.getElementById('adminTotalParticipants').textContent = allPredictions.length;
+            document.getElementById('adminTotalFunds').textContent = `£${allPredictions.length * 10}`;
+            document.getElementById('adminMatchesEntered').textContent = matchResults.length;
+            document.getElementById('adminMatchesRemaining').textContent = 48 - matchResults.length;
+        }
+
+        // Add match result
+        function addResult() {
+            const matchSelect = document.getElementById('matchSelect');
+            const homeScore = document.getElementById('homeScoreInput');
+            const awayScore = document.getElementById('awayScoreInput');
+
+            if (!matchSelect.value) {
+                alert('Please select a match');
+                return;
+            }
+
+            if (homeScore.value === '' || awayScore.value === '') {
+                alert('Please enter both scores');
+                return;
+            }
+
+            const matchId = matchSelect.value;
+            const matchText = matchSelect.options[matchSelect.selectedIndex].text;
+
+            // Check if result already exists
+            const existingIndex = matchResults.findIndex(r => r.matchId === matchId);
+
+            const result = {
+                matchId: matchId,
+                matchName: matchText,
+                homeScore: parseInt(homeScore.value),
+                awayScore: parseInt(awayScore.value),
+                enteredAt: new Date().toISOString()
+            };
+
+            if (existingIndex !== -1) {
+                if (confirm('Result already exists for this match. Do you want to update it?')) {
+                    matchResults[existingIndex] = result;
+                } else {
+                    return;
+                }
+            } else {
+                matchResults.push(result);
+            }
+
+            // Save to localStorage
+            localStorage.setItem('matchResults', JSON.stringify(matchResults));
+
+            // Reset form
+            matchSelect.value = '';
+            homeScore.value = '';
+            awayScore.value = '';
+
+            // Update displays
+            displayResults();
+            updateAdminStats();
+            alert('Result saved successfully!');
+        }
+
+        // Display entered results
+        function displayResults() {
+            const container = document.getElementById('resultsContainer');
+            
+            if (matchResults.length === 0) {
+                container.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">No results entered yet.</p>';
+                return;
+            }
+
+            let html = '';
+            matchResults.forEach((result, index) => {
+                html += `
+                    <div class="result-item">
+                        <div class="result-info">
+                            <strong>${result.matchName.replace(/Match \d+: /, '')}</strong><br>
+                            <small style="color: #666;">Entered: ${new Date(result.enteredAt).toLocaleString()}</small>
+                        </div>
+                        <div class="result-score">
+                            ${result.homeScore} - ${result.awayScore}
+                        </div>
+                        <button onclick="deleteResult(${index})" class="delete-btn">Delete</button>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Delete a result
+        function deleteResult(index) {
+            if (confirm('Are you sure you want to delete this result?')) {
+                matchResults.splice(index, 1);
+                localStorage.setItem('matchResults', JSON.stringify(matchResults));
+                displayResults();
+                updateAdminStats();
+            }
+        }
+
+        // Display participants
+        function displayParticipants() {
+            const container = document.getElementById('participantsList');
+            
+            if (allPredictions.length === 0) {
+                container.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">No participants yet.</p>';
+                return;
+            }
+
+            let html = '<table style="width: 100%; border-collapse: collapse;">';
+            html += '<thead><tr style="background: #667eea; color: white;"><th style="padding: 12px; text-align: left;">Name</th><th style="padding: 12px; text-align: left;">Email</th><th style="padding: 12px; text-align: left;">Phone</th><th style="padding: 12px; text-align: left;">Submitted</th></tr></thead>';
+            html += '<tbody>';
+
+            allPredictions.forEach(pred => {
+                html += `
+                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                        <td style="padding: 12px;">${pred.player.name}</td>
+                        <td style="padding: 12px;">${pred.player.email}</td>
+                        <td style="padding: 12px;">${pred.player.phone}</td>
+                        <td style="padding: 12px;">${new Date(pred.submittedAt).toLocaleString()}</td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Download participants list
+        function downloadParticipants() {
+            if (allPredictions.length === 0) {
+                alert('No participants to download.');
+                return;
+            }
+
+            let csv = 'Name,Email,Phone,Submitted\n';
+            allPredictions.forEach(pred => {
+                csv += `"${pred.player.name}","${pred.player.email}","${pred.player.phone}","${new Date(pred.submittedAt).toLocaleString()}"\n`;
+            });
+
+            downloadFile('participants.csv', csv, 'text/csv');
+        }
+
+        // Download all predictions
+        function downloadPredictions() {
+            if (allPredictions.length === 0) {
+                alert('No predictions to download.');
+                return;
+            }
+
+            const data = JSON.stringify(allPredictions, null, 2);
+            downloadFile('all-predictions.json', data, 'application/json');
+        }
+
+        // Export all data
+        function exportAllData() {
+            const data = {
+                predictions: allPredictions,
+                results: matchResults,
+                exportDate: new Date().toISOString(),
+                stats: {
+                    totalParticipants: allPredictions.length,
+                    totalFunds: allPredictions.length * 10,
+                    matchesEntered: matchResults.length
+                }
+            };
+
+            const dataStr = JSON.stringify(data, null, 2);
+            downloadFile(`backup-${Date.now()}.json`, dataStr, 'application/json');
+        }
+
+        // Import all data
+        function importAllData(fileInput) {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (data.predictions) {
+                        allPredictions = data.predictions;
+                        localStorage.setItem('allPredictions', JSON.stringify(allPredictions));
+                    }
+                    
+                    if (data.results) {
+                        matchResults = data.results;
+                        localStorage.setItem('matchResults', JSON.stringify(matchResults));
+                    }
+                    
+                    alert('Data imported successfully!');
+                    location.reload();
+                } catch (error) {
+                    alert('Error importing data: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Helper function to download files
+        function downloadFile(filename, content, type) {
+            const blob = new Blob([content], {type: type});
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Refresh leaderboard
+        function refreshLeaderboard() {
+            alert('Leaderboard data is automatically updated. Check the main site to see current standings.');
+        }
+
+        // Clear results only
+        function clearResults() {
+            if (confirm('Are you sure you want to clear all match results? This will reset all points to zero.')) {
+                matchResults = [];
+                localStorage.setItem('matchResults', JSON.stringify(matchResults));
+                displayResults();
+                updateAdminStats();
+                alert('All results have been cleared.');
+            }
+        }
+
+        // Clear everything
+        function clearEverything() {
+            if (confirm('⚠️ WARNING: This will delete ALL data including participants, predictions, and results. Are you ABSOLUTELY sure?')) {
+                if (confirm('This action cannot be undone. Type "DELETE" in the next prompt to confirm.')) {
+                    const confirmation = prompt('Type DELETE to confirm:');
+                    if (confirmation === 'DELETE') {
+                        localStorage.clear();
+                        alert('All data has been permanently deleted.');
+                        location.reload();
+                    } else {
+                        alert('Deletion cancelled.');
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
